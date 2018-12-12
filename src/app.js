@@ -1,20 +1,23 @@
-const Pear = require('simple-peer');
+const Peer = require('simple-peer');
 const $ = require('jquery');
+const playVideo = require('./playVideo');
 /**
  * trickle: option có sư dụng server bên ngoài hay không
  */
 
 const openStream = require('./openStream');
-// openStream(); 
+openStream((stream) => {
+  playVideo(stream, 'localStream')
+  const p = new Peer({ initiator: location.hash === '#1', trickle: false, stream });
 
-const p = new Pear({ initiator: location.hash === '#1', trickle: false })
+  p.on('signal', token => {
+    $('#txtMySignal').val(JSON.stringify(token))
+  });
 
-p.on('signal', token => {
-  $('#my_signal').val(JSON.stringify(token));
-})
+  $('#btnConnect').click(() => {
+    const friendSignal = JSON.parse($('#txtFriendSignal').val());
+    p.signal(friendSignal);
+  });
 
-
-$('#connect_to').click(() => {
-  const friendSignal = JSON.parse($('#my_friend_token').val())
-  p.signal(friendSignal);
-})
+  p.on('stream', friendStream => playVideo(friendStream, 'friendStream'));
+});

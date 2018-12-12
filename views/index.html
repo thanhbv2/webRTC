@@ -2,24 +2,28 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Khoa Pham WebRTC</title>
 </head>
 
 <body>
-  <h1>Demo web RTC</h1>
-  <video id="local" controls></video>
-  <br></br>
-  <label for="">My token</label>
-  <textarea id="my_signal" cols="100" rows="3"></textarea>
-  <br></br>
-  <input type="text" name="" id="my_friend_token" placeholder="connect to friend">
-  <button id="connect_to">connect</button>
-  <video id="friend_steam" controls></video>
-  
-  <script src="./public/bundle.js"></script>
+  <h1>Khoa Pham Training</h1>
+  <video id="localStream" width="300" controls></video>
+  <br />
+  <br />
+  <video id="friendStream" width="300" controls></video>
+  <br />
+  <br />
+  <label>My Connection Token</label>
+  <br />
+  <br />
+  <textarea rows="3" cols="100" id="txtMySignal"></textarea>
+  <br />
+  <br />
+  <input type="text" placeholder="Your friend's signal" id="txtFriendSignal">
+  <br />
+  <br />
+  <button id="btnConnect">Connect</button>
 </body>
+<script src="./public/bundle.js"></script>
 
 </html>

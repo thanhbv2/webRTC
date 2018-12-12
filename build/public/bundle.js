@@ -448,7 +448,7 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Pear = __webpack_require__(/*! simple-peer */ \"./node_modules/simple-peer/index.js\");\nconst $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n/**\n * trickle: option có sư dụng server bên ngoài hay không\n */\n\nconst openStream = __webpack_require__(/*! ./openStream */ \"./src/openStream.js\");\n// openStream(); \n\nconst p = new Pear({ initiator: location.hash === '#1', trickle: false })\n\np.on('signal', token => {\n  $('#my_signal').val(JSON.stringify(token));\n})\n\n\n$('#connect_to').click(() => {\n  const friendSignal = JSON.parse($('#my_friend_token').val())\n  p.signal(friendSignal);\n})\n\np.on('data', data => console.log('===============>', data))\n\np.on('connect', () => {\n  console.log('===============>connected', );\n  setInterval(p.send(Math.random()), 2000)\n})\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("const Peer = __webpack_require__(/*! simple-peer */ \"./node_modules/simple-peer/index.js\");\nconst $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\nconst playVideo = __webpack_require__(/*! ./playVideo */ \"./src/playVideo.js\");\n/**\n * trickle: option có sư dụng server bên ngoài hay không\n */\n\nconst openStream = __webpack_require__(/*! ./openStream */ \"./src/openStream.js\");\nopenStream((stream) => {\n  playVideo(stream, 'localStream')\n  const p = new Peer({ initiator: location.hash === '#1', trickle: false, stream });\n\n  p.on('signal', token => {\n    $('#txtMySignal').val(JSON.stringify(token))\n  });\n\n  $('#btnConnect').click(() => {\n    const friendSignal = JSON.parse($('#txtFriendSignal').val());\n    p.signal(friendSignal);\n  });\n\n  p.on('stream', friendStream => playVideo(friendStream, 'friendStream'));\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -457,9 +457,9 @@ eval("const Pear = __webpack_require__(/*! simple-peer */ \"./node_modules/simpl
   !*** ./src/openStream.js ***!
   \***************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-eval("\nconst playVideo = __webpack_require__(/*! ./playVideo */ \"./src/playVideo.js\");\n\nfunction openCamera() {\n  const constraints = { audio: true, video: { width: 1280, height: 720 } };\n  navigator.mediaDevices.getUserMedia({ audio: false, video: true })\n    .then(stream => playVideo(stream, 'local'))\n    .catch(err => console.log(err));\n\n}\n\n\nmodule.exports = openCamera;\n\n//# sourceURL=webpack:///./src/openStream.js?");
+eval("\nfunction openCamera(cb) {\n  const constraints = { audio: true, video: { width: 1280, height: 720 } };\n  navigator.mediaDevices.getUserMedia({ audio: false, video: true })\n    .then(stream => {\n      cb(stream)\n    })\n    .catch(err => console.log(err));\n\n}\n\n\nmodule.exports = openCamera;\n\n//# sourceURL=webpack:///./src/openStream.js?");
 
 /***/ }),
 
@@ -470,7 +470,7 @@ eval("\nconst playVideo = __webpack_require__(/*! ./playVideo */ \"./src/playVid
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("\n\nfunction playVideo(stream, videoId) {\n  const video = document.getElementById('local');\n  video.srcObject = stream;\n  video.onloadedmetadata = function () {\n    video.play();\n  };\n}\n\nmodule.exports = playVideo;\n\n//# sourceURL=webpack:///./src/playVideo.js?");
+eval("\n\nfunction playVideo(stream, videoId) {\n  const video = document.getElementById(videoId);\n  video.srcObject = stream;\n  video.onloadedmetadata = function () {\n    video.play();\n  };\n}\n\nmodule.exports = playVideo;\n\n//# sourceURL=webpack:///./src/playVideo.js?");
 
 /***/ }),
 
