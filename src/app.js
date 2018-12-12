@@ -18,10 +18,3 @@ $('#connect_to').click(() => {
   const friendSignal = JSON.parse($('#my_friend_token').val())
   p.signal(friendSignal);
 })
-
-p.on('data', data => console.log('===============>', data))
-
-p.on('connect', () => {
-  console.log('===============>connected', );
-  setInterval(p.send(Math.random()), 2000)
-})
