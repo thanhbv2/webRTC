@@ -1,12 +1,9 @@
+const playVideo = require('./playVideo');
 const Peer = require('simple-peer');
 const $ = require('jquery');
-const playVideo = require('./playVideo');
-/**
- * trickle: option có sư dụng server bên ngoài hay không
- */
-
 const openStream = require('./openStream');
-openStream((stream) => {
+
+openStream(function (stream) {
   playVideo(stream, 'localStream')
   const p = new Peer({ initiator: location.hash === '#1', trickle: false, stream });
 
